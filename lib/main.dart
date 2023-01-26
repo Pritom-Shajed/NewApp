@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/pages/Home.dart';
+import 'package:news_app/pages/NewsWeb.dart';
 
 void main() {
   runApp(const MyApp());
