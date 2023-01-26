@@ -1,7 +1,9 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:news_app/constants/constants.dart';
+import 'package:news_app/constants/loadingText.dart';
 import 'package:news_app/models/article_model.dart';
 import 'package:news_app/pages/NewsWeb.dart';
 import 'package:news_app/services/api_services.dart';
@@ -83,107 +85,191 @@ class _HomeState extends State<Home> {
                   ),
                 ),
               ),
-              Expanded(
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16),
+                height: 100,
+                width: double.maxFinite,
                 child: FutureBuilder(
                     future: _apiServices.getArticle(),
                     builder: ((context, snapshot) {
                       if (snapshot.hasData) {
                         List<Article>? articles = snapshot.data;
                         return ListView.separated(
+                            scrollDirection: Axis.horizontal,
                             separatorBuilder: (context, index) => SizedBox(
-                                  height: 12,
+                                  width: 12,
                                 ),
                             itemCount: articles?.length ?? 0,
                             itemBuilder: (_, index) {
-                              return ExpansionTile(
-                                title: Text(articles![index].title),
+                              return Row(
                                 children: [
-                                  Card(
-                                    color: Colors.red,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8, right: 8, top: 8),
-                                          child: ClipRRect(
+                                  Stack(
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(builder: (_) {
+                                            return NewsWebView(
+                                              url: articles[index].url,
+                                            );
+                                          }));
+                                        },
+                                        child: ClipRRect(
+                                          child: Image.network(
+                                            articles![index].urlToImage,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.all(4),
+                                        margin: EdgeInsets.only(
+                                            left: 12, right: 12, top: 12),
+                                        decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(8),
-                                            child: Image.network(
-                                                articles[index].urlToImage),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Text(
-                                            articles[index].description,
-                                            style: whiteText,
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.all(5),
-                                          margin: EdgeInsets.all(8),
-                                          width: double.maxFinite,
-                                          decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(8)),
-                                          child: Column(
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 16),
-                                                child: RichText(
-                                                  text: TextSpan(
-                                                    children: [
-                                                      TextSpan(
-                                                        text: 'News Date: ',
-                                                        style: normalText,
-                                                      ),
-                                                      TextSpan(
-                                                          text: articles[index]
-                                                              .publishedAt
-                                                              .substring(0, 10),
-                                                          style: normalText),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 9),
-                                                child: ElevatedButton(
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                            backgroundColor:
-                                                                Colors.red),
-                                                    onPressed: () =>
-                                                        Navigator.push(context,
-                                                            MaterialPageRoute(
-                                                                builder: (_) {
-                                                          return NewsWebView(
-                                                            url: articles[index]
-                                                                .url,
-                                                          );
-                                                        })),
-                                                    child: Text(
-                                                        'Click to get detailed News')),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  )
+                                            color: Colors.red.shade50),
+                                        child: Text(
+                                            articles[index]
+                                                .publishedAt
+                                                .substring(0, 10),
+                                            style: normalText),
+                                      ),
+                                    ],
+                                  ),
                                 ],
                               );
                             });
                       } else {
+                        return Center(child: loadingText());
+                      }
+                    })),
+              ),
+              Expanded(
+                child: FutureBuilder(
+                    future: _apiServices.getArticle(),
+                    builder: ((context, snapshot) {
+                      if (snapshot.hasData) {
+                        List<Article>? articles = snapshot.data;
+                        return Container(
+                          margin: EdgeInsets.only(top: 16),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(16),
+                                  topRight: Radius.circular(16)),
+                              color: Colors.red.shade50),
+                          child: ListView.separated(
+                              separatorBuilder: (context, index) => SizedBox(
+                                    height: 12,
+                                  ),
+                              itemCount: articles?.length ?? 0,
+                              itemBuilder: (_, index) {
+                                return ExpansionTile(
+                                  textColor: Colors.red.shade900,
+                                  title: Text(articles![index].title),
+                                  children: [
+                                    Card(
+                                      color: Colors.red,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8, right: 8, top: 8),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                              child: Image.network(
+                                                  articles[index].urlToImage),
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.all(4),
+                                            margin: EdgeInsets.only(
+                                                left: 12, right: 12, top: 12),
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                                color: Colors.white),
+                                            child: Text(
+                                                articles[index].source.name!),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(12.0),
+                                            child: Text(
+                                              articles[index].description,
+                                              style: whiteText,
+                                            ),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.all(5),
+                                            margin: EdgeInsets.all(8),
+                                            width: double.maxFinite,
+                                            decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            child: Column(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 16),
+                                                  child: RichText(
+                                                    text: TextSpan(
+                                                      children: [
+                                                        TextSpan(
+                                                          text: 'Author: ',
+                                                          style: normalText,
+                                                        ),
+                                                        TextSpan(
+                                                            text:
+                                                                articles[index]
+                                                                    .author,
+                                                            style: normalText),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 9),
+                                                  child: ElevatedButton(
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors.red),
+                                                      onPressed: () =>
+                                                          Navigator.push(
+                                                              context,
+                                                              MaterialPageRoute(
+                                                                  builder: (_) {
+                                                            return NewsWebView(
+                                                              url: articles[
+                                                                      index]
+                                                                  .url,
+                                                            );
+                                                          })),
+                                                      child: Text(
+                                                          'Click to get detailed News')),
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                );
+                              }),
+                        );
+                      } else {
                         return Center(
-                          child: CircularProgressIndicator(),
+                          child: CircularProgressIndicator(
+                            color: Colors.red,
+                          ),
                         );
                       }
                     })),

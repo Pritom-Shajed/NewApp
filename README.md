@@ -1,3 +1,3 @@
 # news_app
 
-News APP using Rest API Intergration
+News APP with Rest API Integration

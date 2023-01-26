@@ -20,7 +20,7 @@ class ApiServices {
 
       return articles;
     } else {
-      throw ("Can't get the Articles");
+      throw ("Error Occured");
     }
   }
 }

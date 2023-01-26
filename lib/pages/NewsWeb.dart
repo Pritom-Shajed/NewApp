@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/constants/constants.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsWebView extends StatefulWidget {
-  String url;
-
+  final String url;
   NewsWebView({required this.url, super.key});
 
   @override
