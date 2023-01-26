@@ -74,10 +74,31 @@ class _HomeState extends State<Home> {
                                     style: normalText,
                                   ),
                                 ),
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(16),
-                                  child:
-                                      Image.network(articles[index].urlToImage),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 8, right: 8, bottom: 8),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.network(
+                                        articles[index].urlToImage),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 16, right: 16, bottom: 8),
+                                  child: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: 'Date: ',
+                                          style: normalText,
+                                        ),
+                                        TextSpan(
+                                            text: articles[index].publishedAt,
+                                            style: normalText)
+                                      ],
+                                    ),
+                                  ),
                                 )
                               ],
                             ),
