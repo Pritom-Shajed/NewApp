@@ -66,7 +66,20 @@ class _HomeState extends State<Home> {
                           Card(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [],
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    articles[index].description,
+                                    style: normalText,
+                                  ),
+                                ),
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(16),
+                                  child:
+                                      Image.network(articles[index].urlToImage),
+                                )
+                              ],
                             ),
                           )
                         ],
