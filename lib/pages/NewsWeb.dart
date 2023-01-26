@@ -48,7 +48,7 @@ class _NewsWebViewState extends State<NewsWebView> {
               TextSpan(
                   text: 'APP',
                   style: TextStyle(
-                      color: Colors.blue,
+                      color: Colors.red,
                       fontWeight: FontWeight.bold,
                       fontSize: 20)),
             ]))),
