@@ -10,13 +10,11 @@ class ApiServices {
   Future<List<Article>> getArticle() async {
     var response = await http.get(apiUrl);
 
-    //first of all let's check that we got a 200 statu code: this mean that the request was a succes
     if (response.statusCode == 200) {
       Map<String, dynamic> json = jsonDecode(response.body);
 
       List<dynamic> body = json['articles'];
 
-      //this line will allow us to get the different articles from the json file and putting them into a list
       List<Article> articles =
           body.map((dynamic item) => Article.fromJson(item)).toList();
 
@@ -26,15 +24,3 @@ class ApiServices {
     }
   }
 }
-//   Future<List<Article>?> getArticle() async {
-//     final uri = Uri.parse(apiUrl);
-
-//     var response = await http.get(uri);
-//     if (response.statusCode == 200) {
-//       var body = response.body;
-//       return articleFromJson(body);
-//     } else {
-//       throw 'Error Occured';
-//     }
-//   }
-// }
